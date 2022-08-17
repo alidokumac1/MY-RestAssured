@@ -4,8 +4,11 @@ import io.restassured.RestAssured;
 import io.restassured.http.ContentType;
 import io.restassured.response.Response;
 import org.junit.jupiter.api.Assertions;
+import org.junit.jupiter.api.BeforeAll;
 import org.junit.jupiter.api.DisplayName;
 import org.junit.jupiter.api.Test;
+
+import javax.annotation.meta.When;
 
 import static io.restassured.RestAssured.*;
 import static org.junit.jupiter.api.Assertions.*;
@@ -79,5 +82,24 @@ public class ReqResApiTest {
         assertTrue(response.asString().contains("Charles"));
         response.then().assertThat().contentType(ContentType.JSON);
 
+    }
+
+//    When Send get request to API Endpoint:
+//            "https://reqres.in/api/users/50"
+//    Then Response status code should be 404
+//    And Response body should contain "{}"
+
+    @Test
+    public void getSingleUserNegativeApiTest() {
+
+        Response response = when().get("https://reqres.in/api/users/50");
+
+        response.prettyPrint();
+        response.then().assertThat().statusCode(404);
+
+        System.out.println("response.asString() = " + response.asString());
+        assertEquals("{\n" +
+                "    \n" +
+                "}" , response.asString());
     }
 }
